@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <!--写SQL语句的
+        命名空间：test,findUserById  order.findUserById
+    -->
+    <mapper namespace="test">
+
+    <!--通过ID查新一个用户-->
+    <select id="findUserById" parameterType="Integer" resultType="com.mycode.mybatis.pojo.User">
+        select * from user where id = #{v}
+    </select>
+    <!--根据用户名称模糊查询用户列表
+        #{}  select * from user where id = ? 所以，#{}表示的是占位符   预编译
+           select * from user where id = ? ? == 王五
+     ${}  select * from user where username like 字符串拼接        不是预编译
+        select * from user where username like username = '%五%'    ${} =='%五%'
+     -->
+    <select id="findUserByUsername" parameterType="String" resultType="com.mycode.mybatis.pojo.User">
+        <!--方法1：select * from user where username like '%${value}%' -->
+          select * from user where username like "%"#{v}"%"
+      </select>
+
+        <!--增加用户-->
+    <insert id="insertUser" parameterType="com.mycode.mybatis.pojo.User">
+        insert into user (username,birthday,address,sex)
+        values (#{username},#{birthday},#{address},#{sex})
+    </insert>
+      </mapper>
